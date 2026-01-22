@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AuthUser } from '@app/auth-types/user';
+import { AuthUser } from '@app/auth-types';
 
 // Define UserRole enum locally to avoid import issues
 export enum UserRole {
@@ -66,8 +66,8 @@ export class RoleDataFilterService {
 
       case UserRole.CREW_LEAD:
         // Can access if resource belongs to their teams or is their own
-        return resourceOwnerId === user._id || 
-               (resourceTeamId && user.teamIds?.includes(resourceTeamId));
+        return resourceOwnerId === user._id ||
+          !!(resourceTeamId && user.teamIds?.includes(resourceTeamId));
 
       case UserRole.TRADESMAN:
         // Can only access their own resources

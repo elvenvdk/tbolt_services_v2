@@ -1,7 +1,7 @@
-import { AuthUser } from '@app/auth-types/user';
+import { AuthUser } from '@app/auth-types';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-const getCurrentUserByContext = (context: ExecutionContext): AuthUser => {
+const getCurrentUserByContext = (context: ExecutionContext): AuthUser | null => {
   if (context.getType() === 'http') {
     return context.switchToHttp().getRequest().user;
   }

@@ -7,8 +7,8 @@
 
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import type { AuthUser } from '@app/auth-types';
 import { CurrentUser } from '../decorators/current-user.decorator';
-import { AuthUser } from '@app/auth-types/user';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { RolesGuard } from './roles.guard';
 import { Roles } from './roles.decorator';

@@ -7,21 +7,28 @@
 
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import type { AuthUser } from '@app/auth-types';
 import { CurrentUser } from '../decorators/current-user.decorator';
-import { AuthUser } from '@app/auth-types/user';
-import { UserRole } from '@app/auth/users/models/users.schema';
-import { 
-  RequireRoles, 
-  AdminOnly, 
-  ManagementOnly, 
-  AuthenticatedOnly 
+import {
+  RequireRoles,
+  AdminOnly,
+  ManagementOnly,
+  AuthenticatedOnly
 } from './graphql-roles.decorator';
+
+// Define UserRole enum locally to support role-based access control
+export enum UserRole {
+  SITE_ADMIN = 'SITE_ADMIN',
+  CREW_LEAD = 'CREW_LEAD',
+  TRADESMAN = 'TRADESMAN',
+  OBSERVER = 'OBSERVER'
+}
 import { RoleDataFilterService } from './role-data-filter.service';
 
 // Example resolver showing different role-based access patterns
 @Resolver()
 export class ExampleRoleBasedResolver {
-  constructor(private readonly roleDataFilter: RoleDataFilterService) {}
+  constructor(private readonly roleDataFilter: RoleDataFilterService) { }
 
   // 1. Admin-only access
   @Query()
@@ -84,7 +91,7 @@ export class ExampleRoleBasedResolver {
   ) {
     // Check if user can access this specific resource
     const task = { userId: 'some-user-id', teamId: 'some-team-id' }; // Mock task
-    
+
     if (!this.roleDataFilter.canAccessResource(user, task.userId, task.teamId)) {
       throw new Error('Access denied to this resource');
     }

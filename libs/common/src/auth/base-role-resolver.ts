@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AuthUser } from '@app/auth-types/user';
+import { AuthUser } from '@app/auth-types';
 import { RoleDataFilterService } from './role-data-filter.service';
 
 // Import UserRole from the correct path
@@ -12,7 +12,7 @@ export enum UserRole {
 
 @Injectable()
 export abstract class BaseRoleResolver {
-  constructor(protected readonly roleDataFilter: RoleDataFilterService) {}
+  constructor(protected readonly roleDataFilter: RoleDataFilterService) { }
 
   /**
    * Get role-based MongoDB filter for queries
